@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +11,7 @@
       background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
       color: #fff;
       overflow-x: hidden;
+      cursor: url('https://cur.cursors-4u.net/cursors/cur-11/cur1010.ani'), auto;
     }
 
     header {
@@ -29,6 +29,8 @@
       padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 2;
     }
 
     .about {
@@ -57,6 +59,25 @@
     button:hover {
       background: #e04ac9;
     }
+
+    #status {
+      text-align: center;
+      margin-top: 1rem;
+      font-style: italic;
+      color: #ccc;
+    }
+
+    .chebu {
+      position: fixed;
+      width: 60px;
+      animation: floaty 25s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floaty {
+      0% { transform: translateY(100vh) rotate(0deg); left: 5vw; }
+      100% { transform: translateY(-120vh) rotate(360deg); left: 90vw; }
+    }
   </style>
 </head>
 <body>
@@ -75,48 +96,48 @@
       <button onclick="pauseTrack()">Pause</button>
       <button onclick="nextTrack()">Next</button>
     </div>
+    <div id="status">⚠️ Click play to start music.</div>
     <audio id="audio" src="" preload="auto"></audio>
   </div>
 
-  <div id="nowPlaying" style="text-align:center; margin-top: 1rem; font-size: 1rem; color: #aaa;"></div>
+  <!-- Floating Cheburashkas -->
+  <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Cheburashka_character.png" class="chebu" style="top:90vh; left:10vw; animation-delay: 0s;">
+  <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Cheburashka_character.png" class="chebu" style="top:95vh; left:50vw; animation-delay: 5s;">
+  <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Cheburashka_character.png" class="chebu" style="top:92vh; left:80vw; animation-delay: 10s;">
 
-<script>
- const tracks = [
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-];
+  <script>
+    const tracks = [
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+    ];
 
+    let current = 0;
+    const audio = document.getElementById('audio');
+    const status = document.getElementById('status');
 
-  let current = 0;
-  const audio = document.getElementById('audio');
-  const nowPlaying = document.getElementById('nowPlaying');
-
-  function playTrack() {
-    if (!audio.src || audio.src !== tracks[current]) {
-      audio.src = tracks[current];
+    function playTrack() {
+      if (!audio.src || audio.src !== tracks[current]) {
+        audio.src = tracks[current];
+        status.textContent = '🎶 Playing track...';
+      } else {
+        status.textContent = '🎶 Resuming music...';
+      }
+      audio.play();
     }
-    audio.play().then(() => {
-      nowPlaying.textContent = "🎶 Now playing: track " + (current + 1);
-    }).catch(err => {
-      nowPlaying.textContent = "⚠️ Click play to start music.";
-      console.log("Autoplay blocked or error: ", err);
-    });
-  }
 
-  function pauseTrack() {
-    audio.pause();
-    nowPlaying.textContent = "⏸️ Paused";
-  }
+    function pauseTrack() {
+      audio.pause();
+      status.textContent = '⏸ Music paused.';
+    }
 
-  function nextTrack() {
-    current = (current + 1) % tracks.length;
-    audio.src = tracks[current];
-    audio.play().then(() => {
-      nowPlaying.textContent = "⏭️ Now playing: track " + (current + 1);
-    }).catch(err => {
-      nowPlaying.textContent = "⚠️ Click play to start music.";
-      console.log("Autoplay blocked or error: ", err);
-    });
-  }
-</script>
+    function nextTrack() {
+      current = (current + 1) % tracks.length;
+      audio.src = tracks[current];
+      audio.play();
+      status.textContent = '⏭ Next song loading...';
+    }
+  </script>
+</body>
+</html>
+
