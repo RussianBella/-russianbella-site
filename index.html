@@ -116,47 +116,44 @@
     <audio id="audio" preload="auto" controls style="display:none;"></audio>
   </div>
 
-  <script>
-    const tracks = [
-      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
-      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
-      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
-    ];
+ <script>
+  const tracks = [
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
+  ];
 
-    let current = 0;
-    const audio = document.getElementById('audio');
-    const status = document.getElementById('status');
+  let current = 0;
+  const audio = document.getElementById('audio');
+  const status = document.getElementById('status');
 
-    function playTrack() {
-      if (!audio.src || audio.src !== tracks[current]) {
-        audio.src = tracks[current];
-      }
-      audio.play();
+  function playTrack() {
+    audio.src = tracks[current];
+    audio.load(); // reload the track
+    audio.play().then(() => {
       status.textContent = '🎶 Playing track...';
-    }
+    }).catch(err => {
+      status.textContent = '⚠️ Click play to start music.';
+      console.warn('Autoplay blocked or error:', err);
+    });
+  }
 
-    function pauseTrack() {
-      audio.pause();
-      status.textContent = '⏸️ Music paused.';
-    }
+  function pauseTrack() {
+    audio.pause();
+    status.textContent = '⏸️ Music paused.';
+  }
 
-    function nextTrack() {
-      current = (current + 1) % tracks.length;
-      audio.src = tracks[current];
-      audio.play();
+  function nextTrack() {
+    current = (current + 1) % tracks.length;
+    audio.src = tracks[current];
+    audio.load();
+    audio.play().then(() => {
       status.textContent = '⏭ Next song loading...';
-    }
-
-    // Create floating Hello Kitty images
-    for (let i = 0; i < 12; i++) {
-      const kitty = document.createElement('div');
-      kitty.className = 'floating-img';
-      kitty.style.left = Math.random() * 100 + 'vw';
-      kitty.style.animationDuration = (10 + Math.random() * 20) + 's';
-      kitty.style.top = '100vh';
-      document.body.appendChild(kitty);
-    }
-  </script>
+    }).catch(err => {
+      status.textContent = '⚠️ Click play again.';
+    });
+  }
+</script>
 
   <!-- Glitter cursor -->
   <script src="https://cdn.jsdelivr.net/gh/tholman/cursor-effects@latest/dist/browser.js"></script>
