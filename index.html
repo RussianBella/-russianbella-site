@@ -78,32 +78,44 @@
     <audio id="audio" src="" preload="auto"></audio>
   </div>
 
-  <script>
-    const tracks = [
-      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
-      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
-      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
-    ];
+  <div id="nowPlaying" style="text-align:center; margin-top: 1rem; font-size: 1rem; color: #aaa;"></div>
 
-    let current = 0;
-    const audio = document.getElementById('audio');
+<script>
+  const tracks = [
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
+  ];
 
-    function playTrack() {
-      if (!audio.src || audio.src !== tracks[current]) {
-        audio.src = tracks[current];
-      }
-      audio.play();
-    }
+  let current = 0;
+  const audio = document.getElementById('audio');
+  const nowPlaying = document.getElementById('nowPlaying');
 
-    function pauseTrack() {
-      audio.pause();
-    }
-
-    function nextTrack() {
-      current = (current + 1) % tracks.length;
+  function playTrack() {
+    if (!audio.src || audio.src !== tracks[current]) {
       audio.src = tracks[current];
-      audio.play();
     }
-  </script>
-</body>
-</html>
+    audio.play().then(() => {
+      nowPlaying.textContent = "🎶 Now playing: track " + (current + 1);
+    }).catch(err => {
+      nowPlaying.textContent = "⚠️ Click play to start music.";
+      console.log("Autoplay blocked or error: ", err);
+    });
+  }
+
+  function pauseTrack() {
+    audio.pause();
+    nowPlaying.textContent = "⏸️ Paused";
+  }
+
+  function nextTrack() {
+    current = (current + 1) % tracks.length;
+    audio.src = tracks[current];
+    audio.play().then(() => {
+      nowPlaying.textContent = "⏭️ Now playing: track " + (current + 1);
+    }).catch(err => {
+      nowPlaying.textContent = "⚠️ Click play to start music.";
+      console.log("Autoplay blocked or error: ", err);
+    });
+  }
+</script>
