@@ -69,17 +69,16 @@
     }
 
     .cheburashka {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background-image: url('https://i.imgur.com/IfltxEl.png'); /* Cheburashka PNG */
-  background-size: contain;
-  background-repeat: no-repeat;
-  animation: float 20s linear infinite;
-  opacity: 0.7;
-  pointer-events: none;
-}
-
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-image: url('https://i.imgur.com/W95nL8c.png'); /* Hello Kitty image */
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: float 20s linear infinite;
+      opacity: 0.7;
+      pointer-events: none;
+    }
 
     @keyframes float {
       0% {
@@ -142,7 +141,7 @@
       status.textContent = '⏭ Next song loading...';
     }
 
-    // Add floating cheburashkas
+    // Add floating Hello Kitties
     for (let i = 0; i < 8; i++) {
       const img = document.createElement('div');
       img.classList.add('cheburashka');
@@ -160,4 +159,3 @@
   </script>
 </body>
 </html>
-
