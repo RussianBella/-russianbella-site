@@ -11,7 +11,7 @@
       background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
       color: #fff;
       overflow-x: hidden;
-      cursor: url('https://cur.cursors-4u.net/cursors/cur-11/cur1010.ani'), auto;
+      position: relative;
     }
 
     header {
@@ -29,8 +29,8 @@
       padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      z-index: 10;
       position: relative;
-      z-index: 2;
     }
 
     .about {
@@ -43,6 +43,7 @@
       display: flex;
       justify-content: center;
       gap: 1rem;
+      margin-bottom: 1rem;
     }
 
     button {
@@ -63,20 +64,29 @@
     #status {
       text-align: center;
       margin-top: 1rem;
+      color: #ffcdfb;
       font-style: italic;
-      color: #ccc;
     }
 
-    .chebu {
-      position: fixed;
+    .cheburashka {
+      position: absolute;
       width: 60px;
-      animation: floaty 25s linear infinite;
-      z-index: 1;
+      height: 60px;
+      background-image: url('https://i.imgur.com/7vhS3Zd.png'); /* Working cheburashka PNG */
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: float 20s linear infinite;
+      opacity: 0.7;
+      pointer-events: none;
     }
 
-    @keyframes floaty {
-      0% { transform: translateY(100vh) rotate(0deg); left: 5vw; }
-      100% { transform: translateY(-120vh) rotate(360deg); left: 90vw; }
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100vw);
+      }
     }
   </style>
 </head>
@@ -100,16 +110,11 @@
     <audio id="audio" src="" preload="auto"></audio>
   </div>
 
-  <!-- Floating Cheburashkas -->
-  <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Cheburashka_character.png" class="chebu" style="top:90vh; left:10vw; animation-delay: 0s;">
-  <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Cheburashka_character.png" class="chebu" style="top:95vh; left:50vw; animation-delay: 5s;">
-  <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Cheburashka_character.png" class="chebu" style="top:92vh; left:80vw; animation-delay: 10s;">
-
   <script>
     const tracks = [
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
+      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
+      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
     ];
 
     let current = 0;
@@ -119,16 +124,14 @@
     function playTrack() {
       if (!audio.src || audio.src !== tracks[current]) {
         audio.src = tracks[current];
-        status.textContent = '🎶 Playing track...';
-      } else {
-        status.textContent = '🎶 Resuming music...';
       }
       audio.play();
+      status.textContent = '🎶 Playing track...';
     }
 
     function pauseTrack() {
       audio.pause();
-      status.textContent = '⏸ Music paused.';
+      status.textContent = '⏸️ Music paused.';
     }
 
     function nextTrack() {
@@ -137,6 +140,22 @@
       audio.play();
       status.textContent = '⏭ Next song loading...';
     }
+
+    // Add floating cheburashkas
+    for (let i = 0; i < 8; i++) {
+      const img = document.createElement('div');
+      img.classList.add('cheburashka');
+      img.style.left = Math.random() * window.innerWidth + 'px';
+      img.style.top = Math.random() * window.innerHeight + 'px';
+      img.style.animationDuration = (15 + Math.random() * 10) + 's';
+      document.body.appendChild(img);
+    }
+  </script>
+
+  <!-- Glitter cursor -->
+  <script src="https://cdn.jsdelivr.net/gh/tholman/cursor-effects@latest/dist/browser.js"></script>
+  <script>
+    new cursoreffects.sparkleCursor();
   </script>
 </body>
 </html>
