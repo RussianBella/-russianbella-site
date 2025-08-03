@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Russianbella</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      font-size: 3rem;
+      color: #ff5ef3;
+      text-shadow: 0 0 10px #ff5ef3;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .about {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .player {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    button {
+      background: #ff5ef3;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      color: white;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff5ef3;
+    }
+
+    button:hover {
+      background: #e04ac9;
+    }
+  </style>
+</head>
+<body>
+  <header>Russianbella</header>
+  <div class="container">
+    <div class="about">
+      <strong>About Me</strong><br />
+      Old-school internet girl, born in the glitter-glitch of MySpace days.<br />
+      Coding with chaos, dreaming in neon.<br />
+      Dancing through the world, collecting sounds, stars, and stories.<br />
+      Music is my spaceship. Welcome to my corner of the galaxy.
+    </div>
+
+    <div class="player">
+      <button onclick="playTrack()">Play</button>
+      <button onclick="pauseTrack()">Pause</button>
+      <button onclick="nextTrack()">Next</button>
+    </div>
+    <audio id="audio" src="" preload="auto"></audio>
+  </div>
+
+  <script>
+    const tracks = [
+      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
+      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
+      'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
+    ];
+
+    let current = 0;
+    const audio = document.getElementById('audio');
+
+    function playTrack() {
+      if (!audio.src || audio.src !== tracks[current]) {
+        audio.src = tracks[current];
+      }
+      audio.play();
+    }
+
+    function pauseTrack() {
+      audio.pause();
+    }
+
+    function nextTrack() {
+      current = (current + 1) % tracks.length;
+      audio.src = tracks[current];
+      audio.play();
+    }
+  </script>
+</body>
+</html>
