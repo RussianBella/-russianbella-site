@@ -68,25 +68,30 @@
       font-style: italic;
     }
 
-    .cheburashka {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      background-image: url('https://media.giphy.com/media/IuM8cV6j8mxuo/giphy.gif');
- /* Hello Kitty image */
+    .floating-img {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background-image: url('https://i.imgur.com/W95nL8c.png');
       background-size: contain;
       background-repeat: no-repeat;
-      animation: float 20s linear infinite;
-      opacity: 0.7;
       pointer-events: none;
+      animation: floatUp linear infinite;
+      z-index: 0;
+      opacity: 0.7;
     }
 
-    @keyframes float {
+    @keyframes floatUp {
       0% {
-        transform: translateY(100vh) translateX(0);
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
       }
       100% {
-        transform: translateY(-100vh) translateX(100vw);
+        transform: translateY(-200px) rotate(360deg);
+        opacity: 0;
       }
     }
   </style>
@@ -108,7 +113,7 @@
       <button onclick="nextTrack()">Next</button>
     </div>
     <div id="status">⚠️ Click play to start music.</div>
-    <audio id="audio" src="" preload="auto"></audio>
+    <audio id="audio" preload="auto" controls style="display:none;"></audio>
   </div>
 
   <script>
@@ -142,14 +147,14 @@
       status.textContent = '⏭ Next song loading...';
     }
 
-    // Add floating Hello Kitties
-    for (let i = 0; i < 8; i++) {
-      const img = document.createElement('div');
-      img.classList.add('cheburashka');
-      img.style.left = Math.random() * window.innerWidth + 'px';
-      img.style.top = Math.random() * window.innerHeight + 'px';
-      img.style.animationDuration = (15 + Math.random() * 10) + 's';
-      document.body.appendChild(img);
+    // Create floating Hello Kitty images
+    for (let i = 0; i < 12; i++) {
+      const kitty = document.createElement('div');
+      kitty.className = 'floating-img';
+      kitty.style.left = Math.random() * 100 + 'vw';
+      kitty.style.animationDuration = (10 + Math.random() * 20) + 's';
+      kitty.style.top = '100vh';
+      document.body.appendChild(kitty);
     }
   </script>
 
@@ -160,3 +165,4 @@
   </script>
 </body>
 </html>
+
