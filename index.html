@@ -175,22 +175,68 @@ const tracks = [
   window.addEventListener("load", () => {
     playTrack(); // attempt autoplay first
   });
-</script>
 
- 
-  document.addEventListener("DOMContentLoaded", () => {
-    audio.play().catch(() => {
-      const btn = document.createElement("button");
-      btn.textContent = "🎵 Tap to start music";
-      btn.style = "position:fixed;top:10px;right:10px;z-index:1000;padding:10px;font-size:16px;";
-      btn.onclick = () => {
-        audio.play();
-        btn.remove();
-      };
-      document.body.appendChild(btn);
-    });
+<script>
+  const tracks = [
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3'
+  ];
+
+  let current = 0;
+  const player = document.getElementById('audio');
+  const status = document.getElementById('status');
+
+  function playTrack() {
+    if (!player.src || player.src !== tracks[current]) {
+      player.src = tracks[current];
+    }
+    console.log("Attempting to play:", player.src);
+    player.play()
+      .then(() => {
+        console.log("✅ Music is playing!");
+        status.textContent = '🎶 Playing track...';
+      })
+      .catch((err) => {
+        console.log("❌ Error playing:", err);
+        showUnlockButton();
+      });
+  }
+
+  function showUnlockButton() {
+    status.textContent = '🔇 Tap to start music';
+    if (document.getElementById("unlockBtn")) return;
+
+    const btn = document.createElement("button");
+    btn.id = "unlockBtn";
+    btn.textContent = "🔊 Start Music";
+    btn.style = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ff5ef3;
+      color: white;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      z-index: 9999;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff5ef3;
+    `;
+    btn.onclick = () => {
+      console.log("🔘 Start Music button clicked");
+      playTrack();
+      btn.remove();
+    };
+    document.body.appendChild(btn);
+  }
+
+  // Don't autoplay on load anymore — just show button if it fails
+  window.addEventListener("load", () => {
+    playTrack(); // attempt autoplay first
   });
 </script>
+
+
 
 
   
