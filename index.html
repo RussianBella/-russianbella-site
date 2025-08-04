@@ -118,9 +118,7 @@
 
 <script>
   const tracks = [
-    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3',
-    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Sawsquarenoise/Space_Trauma/Sawsquarenoise_-_05_-_Asteroid_Aura.mp3',
-    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Nihilore/The_Higher_Self/Nihilore_-_05_-_Cosmic_Drift.mp3'
+    'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Coma_Media/Sci-Fi_Background_Music/Coma_Media_-_03_-_Galactic_Dawn.mp3'
   ];
 
   let current = 0;
@@ -131,35 +129,24 @@
     if (!player.src || player.src !== tracks[current]) {
       player.src = tracks[current];
     }
+    console.log("Attempting to play:", player.src);
     player.play()
       .then(() => {
+        console.log("✅ Music is playing!");
         status.textContent = '🎶 Playing track...';
       })
-      .catch(() => {
-        showUnlockButton();
-      });
-  }
-
-  function pauseTrack() {
-    player.pause();
-    status.textContent = '⏸️ Music paused.';
-  }
-
-  function nextTrack() {
-    current = (current + 1) % tracks.length;
-    player.src = tracks[current];
-    player.play()
-      .then(() => {
-        status.textContent = '⏭ Next song loading...';
-      })
-      .catch(() => {
+      .catch((err) => {
+        console.log("❌ Error playing:", err);
         showUnlockButton();
       });
   }
 
   function showUnlockButton() {
     status.textContent = '🔇 Tap to start music';
+    if (document.getElementById("unlockBtn")) return;
+
     const btn = document.createElement("button");
+    btn.id = "unlockBtn";
     btn.textContent = "🔊 Start Music";
     btn.style = `
       position: fixed;
@@ -176,29 +163,19 @@
       box-shadow: 0 0 10px #ff5ef3;
     `;
     btn.onclick = () => {
+      console.log("🔘 Start Music button clicked");
       playTrack();
       btn.remove();
     };
     document.body.appendChild(btn);
   }
 
+  // Don't autoplay on load anymore — just show button if it fails
   window.addEventListener("load", () => {
-    playTrack(); // try autoplay on page load
+    playTrack(); // attempt autoplay first
   });
 </script>
 
-
-
-
-  <!-- Glitter cursor -->
-  <script src="https://cdn.jsdelivr.net/gh/tholman/cursor-effects@latest/dist/browser.js"></script>
-  <script>
-    new cursoreffects.sparkleCursor();
-  </script>
-</body>
-
-
-<script>
  
   document.addEventListener("DOMContentLoaded", () => {
     audio.play().catch(() => {
