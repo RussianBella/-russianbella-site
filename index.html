@@ -124,43 +124,69 @@
   ];
 
   let current = 0;
-  const audio = document.getElementById('audio');
+  const player = document.getElementById('audio');
   const status = document.getElementById('status');
 
   function playTrack() {
-  if (!audio.src || audio.src !== tracks[current]) {
-    audio.src = tracks[current];
+    if (!player.src || player.src !== tracks[current]) {
+      player.src = tracks[current];
+    }
+    player.play()
+      .then(() => {
+        status.textContent = '🎶 Playing track...';
+      })
+      .catch(() => {
+        showUnlockButton();
+      });
   }
-  audio.play()
-    .then(() => {
-      status.textContent = '🎶 Playing track...';
-    })
-    .catch((err) => {
-      console.warn('Playback error:', err);
-      status.textContent = '⚠️ Tap again to allow sound (browser blocked it).';
-    });
-}
-
 
   function pauseTrack() {
-    audio.pause();
+    player.pause();
     status.textContent = '⏸️ Music paused.';
   }
 
   function nextTrack() {
-  current = (current + 1) % tracks.length;
-  audio.src = tracks[current];
-  audio.play()
-    .then(() => {
-      status.textContent = '⏭ Next song loading...';
-    })
-    .catch((err) => {
-      console.warn('Playback error:', err);
-      status.textContent = '⚠️ Tap again to allow sound (browser blocked it).';
-    });
-}
+    current = (current + 1) % tracks.length;
+    player.src = tracks[current];
+    player.play()
+      .then(() => {
+        status.textContent = '⏭ Next song loading...';
+      })
+      .catch(() => {
+        showUnlockButton();
+      });
+  }
 
+  function showUnlockButton() {
+    status.textContent = '🔇 Tap to start music';
+    const btn = document.createElement("button");
+    btn.textContent = "🔊 Start Music";
+    btn.style = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ff5ef3;
+      color: white;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      z-index: 9999;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff5ef3;
+    `;
+    btn.onclick = () => {
+      playTrack();
+      btn.remove();
+    };
+    document.body.appendChild(btn);
+  }
+
+  window.addEventListener("load", () => {
+    playTrack(); // try autoplay on page load
+  });
 </script>
+
 
 
 
@@ -170,10 +196,7 @@
     new cursoreffects.sparkleCursor();
   </script>
 </body>
-<audio id="bg-music" autoplay loop>
-  <source src="your-song.mp3" type="audio/mpeg" />
-  Your browser does not support the audio element.
-</audio>
+
 
 <script>
   const audio = document.getElementById("bg-music");
